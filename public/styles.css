@@ -1,0 +1,93 @@
+/* TC Lawn Care Plus LLC — company colors: dark green, lime green,
+   orange/gold, navy blue, sky-blue accent, white. Grass background. */
+:root {
+  --dark-green: #0b3d1e;
+  --green: #14532d;
+  --lime: #a3e635;
+  --gold: #f59e0b;
+  --navy: #1e3a8a;
+  --sky: #38bdf8;
+  --white: #ffffff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Arial, sans-serif;
+  color: #fff;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 2px, transparent 2px 60px),
+    linear-gradient(180deg, #0b3d1e 0%, #166534 45%, #0b3d1e 100%);
+}
+.top { text-align: center; padding: 16px 12px 8px; }
+.logo { max-width: 340px; width: 90%; border-radius: 12px; box-shadow: 0 6px 24px rgba(0,0,0,0.5); background: #fff; }
+.logo-small { max-width: 220px; width: 70%; border-radius: 10px; background: #fff; }
+.banner h1 { font-size: clamp(2rem, 8vw, 3.4rem); margin: 12px 0 4px; text-shadow: 0 2px 0 #000, 0 0 24px rgba(163,230,53,0.45); }
+.c-dark { color: #fff; }
+.c-lime { color: var(--lime); }
+.c-gold { color: var(--gold); }
+.tagline { margin: 0 0 12px; font-size: 1.1rem; }
+.book-now-long {
+  display: block; width: min(680px, 94%); margin: 12px auto;
+  background: var(--gold); color: #111; font-weight: 800; font-size: 1.15rem;
+  text-align: center; text-decoration: none; padding: 14px 18px;
+  border-radius: 12px; box-shadow: 0 4px 0 #92400e, 0 8px 24px rgba(0,0,0,0.45);
+}
+main { max-width: 860px; margin: 0 auto; padding: 8px 12px 24px; }
+.card {
+  background: rgba(0,0,0,0.55); border: 2px solid rgba(163,230,53,0.5);
+  border-radius: 16px; padding: 18px; margin: 18px 0;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+}
+.card h2 { margin-top: 0; color: var(--lime); font-size: 1.6rem; }
+.card h3 { color: var(--gold); }
+.white, figcaption, .card p { color: #fff; }
+.featured-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.featured-pair figure, .gallery figure { margin: 0; }
+.featured-pair img, .gallery img {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 12px;
+  border: 3px solid var(--gold); box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
+.featured-pair img { aspect-ratio: 3 / 4; }
+.gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.gallery img { aspect-ratio: 4 / 3; }
+figcaption { text-align: center; padding: 8px 4px 4px; font-weight: 600; }
+.bullets li { margin: 6px 0; }
+.services { columns: 2; gap: 24px; }
+.services li { margin: 6px 0; color: #fff; }
+.review { border-left: 4px solid var(--gold); margin: 16px 0; padding: 8px 16px; background: rgba(255,255,255,0.08); border-radius: 0 12px 12px 0; }
+.review footer { color: var(--lime); font-weight: 700; margin-top: 8px; }
+/* Forms only: transparent logo watermark behind the writing. */
+.form-card { position: relative; overflow: hidden; background: rgba(255,255,255,0.95); color: #111; border-radius: 14px; padding: 18px; margin-top: 14px; }
+.form-card::before {
+  content: ""; position: absolute; inset: 0;
+  background: url("/images/logo.jpg") center / contain no-repeat;
+  opacity: 0.08; pointer-events: none;
+}
+.form-card > * { position: relative; }
+.form-card h3 { color: var(--green); margin-top: 0; }
+.form-card .form-note { color: #333; }
+.form-card label { display: block; margin: 12px 0; font-weight: 600; color: #111; }
+.form-card input, .form-card textarea {
+  display: block; width: 100%; margin-top: 6px; padding: 10px;
+  border: 2px solid var(--green); border-radius: 8px; font-size: 1rem;
+}
+.btn {
+  background: var(--gold); color: #111; border: 0; border-radius: 10px;
+  padding: 12px 18px; font-size: 1.05rem; font-weight: 800; cursor: pointer; margin: 6px 6px 6px 0;
+}
+.btn-secondary { background: var(--sky); }
+.stars button { font-size: 2rem; background: none; border: 0; cursor: pointer; color: #bbb; padding: 2px; }
+.stars button.on { color: var(--gold); }
+#star-label { margin-left: 8px; font-weight: 600; }
+.status { min-height: 1.2em; font-weight: 600; }
+.success { text-align: center; background: rgba(255,255,255,0.95); color: #111; border-radius: 14px; padding: 20px; margin-top: 14px; }
+.success-msg { color: #15803d; font-size: 1.5rem; font-weight: 800; }
+.booking-card { background: rgba(255,255,255,0.95); color: #111; border-radius: 12px; padding: 14px; margin: 12px 0; }
+.booking-card p { color: #111; margin: 6px 0; }
+.badge { display: inline-block; background: #dc2626; color: #fff; font-weight: 800; font-size: 0.8rem; padding: 2px 8px; border-radius: 999px; margin-left: 8px; }
+.ding { font-weight: 700; }
+.footer { text-align: center; padding: 12px 12px 32px; }
+@media (max-width: 640px) {
+  .featured-pair, .gallery { grid-template-columns: 1fr; }
+  .services { columns: 1; }
+}

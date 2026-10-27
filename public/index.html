@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TC Lawn Care Plus LLC</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top">
+  <img class="logo" src="/images/logo.jpg" alt="TC Lawn Care Plus LLC logo">
+  <div class="banner">
+    <h1><span class="c-dark">TC</span> <span class="c-lime">Lawn Care</span> <span class="c-gold">Plus, LLC</span></h1>
+    <p class="tagline">Lawn care and landscaping, done right.</p>
+  </div>
+  <a class="book-now-long" href="#booking">Book Now — we will reach out</a>
+</header>
+
+<main>
+  <section class="hero-note card">
+    <p class="white">We service the 724 area and surrounding counties, about 15 miles out. Book below and a team member will reach out, usually within the hour.</p>
+  </section>
+
+  <section class="card featured">
+    <h2>Featured</h2>
+    <div class="featured-pair">
+      <figure>
+        <img src="/images/featured-trailer-clean.jpg" alt="T. Craig in uniform beside the black TC Lawn Care Plus LLC trailer">
+        <figcaption>T. Craig in uniform beside the trailer</figcaption>
+      </figure>
+      <figure>
+        <img src="/images/mowing.webp" alt="T. Craig riding the zero-turn mower">
+        <figcaption>T. Craig riding the zero-turn mower</figcaption>
+      </figure>
+    </div>
+    <ul class="white bullets">
+      <li>We service the 724 area and surrounding counties, about 15 miles out</li>
+      <li>Get yourself booked in today</li>
+      <li>We will reach out — a team member will reach out, usually within the hour</li>
+      <li>Have a nice day</li>
+    </ul>
+  </section>
+
+  <section class="card" id="services">
+    <h2>Our Services</h2>
+    <ul class="services">
+      <li>Lawn Mowing</li>
+      <li>Landscaping</li>
+      <li>Mulching</li>
+      <li>Hedge Trimming</li>
+      <li>Tree &amp; Stump Removal</li>
+      <li>Seasonal Clean-Ups</li>
+      <li>Grass cutting / mowing</li>
+      <li>Weed whacking / trimming</li>
+      <li>Edging</li>
+      <li>Leaf cleanup</li>
+      <li>Fertilizing</li>
+      <li>Hedge and bush trimming</li>
+      <li>Spring and fall yard cleanup</li>
+      <li>Planting</li>
+      <li>Sod installation</li>
+      <li>Tree cutting and trimming</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Our Work</h2>
+    <div class="gallery">
+      <figure><img src="/images/workers-mowing.webp" alt="Crew mowing a lawn"><figcaption>Crew mowing</figcaption></figure>
+      <figure><img src="/images/workers-hedge.webp" alt="Crew trimming hedges and edging"><figcaption>Hedge trimming and edging</figcaption></figure>
+      <figure><img src="/images/workers-cleanup-redo.webp" alt="Crew doing leaf cleanup and mulching"><figcaption>Leaf cleanup and mulching</figcaption></figure>
+      <figure><img src="/images/workers-better.webp" alt="Crew mowing and trimming"><figcaption>Mowing and trimming</figcaption></figure>
+      <figure><img src="/images/real-trailer-clean.jpg" alt="The TC Lawn Care Plus LLC black trailer"><figcaption>Our trailer</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="card" id="owner-story">
+    <h2>Meet T. Craig — the man behind TC Lawn Care Plus LLC</h2>
+    <p class="white">T. Craig is the owner of TC Lawn Care Plus LLC.</p>
+    <p class="white">We service the 724 area and surrounding counties, about 15 miles out.</p>
+    <p class="white">He puts back into the community and keeps building his business.</p>
+    <p class="white">The Facebook Page and website are run for T. Craig by Ron Glass.</p>
+  </section>
+
+  <section class="card" id="reviews">
+    <h2>Reviews</h2>
+    <blockquote class="review">
+      <p>“The work was great. The workers never stopped working from beginning to end. They only took one break, and that was just for like a 5-minute drink to cool down.”</p>
+      <footer>— Ron Glass</footer>
+    </blockquote>
+    <div id="visitor-reviews"></div>
+
+    <form id="review-form" class="form-card">
+      <h3>Leave a review</h3>
+      <p class="form-note">Tap the stars to pick your rating, then write your review in your own words.</p>
+      <div class="stars" id="star-picker" role="radiogroup" aria-label="Star rating">
+        <button type="button" data-stars="1" aria-label="1 star">★</button>
+        <button type="button" data-stars="2" aria-label="2 stars">★</button>
+        <button type="button" data-stars="3" aria-label="3 stars">★</button>
+        <button type="button" data-stars="4" aria-label="4 stars">★</button>
+        <button type="button" data-stars="5" aria-label="5 stars">★</button>
+        <span id="star-label">Tap 1 to 5 stars</span>
+      </div>
+      <label>Your name <input name="name" required maxlength="100"></label>
+      <label>Service (optional) <input name="service" maxlength="100"></label>
+      <label>Your review <textarea name="text" required maxlength="2000" rows="4"></textarea></label>
+      <button type="submit" class="btn">Submit my review</button>
+      <p id="review-status" class="status"></p>
+    </form>
+  </section>
+
+  <section class="card" id="booking">
+    <h2>Book a Job</h2>
+    <p class="white">Fill in the booking, then save it. We will reach out — a team member will reach out, usually within the hour.</p>
+    <form id="booking-form" class="form-card">
+      <label>Your name <input name="name" required maxlength="100"></label>
+      <label>Your phone (so the team can reach back out) <input name="phone" type="tel" maxlength="40"></label>
+      <label>Where it is <input name="location" required maxlength="300" placeholder="Address or area"></label>
+      <label>Yard size estimate <input name="yardSize" maxlength="100" placeholder="For example: small, medium, large, about half an acre"></label>
+      <label>What needs done <textarea name="workNeeded" required maxlength="2000" rows="4"></textarea></label>
+      <button type="submit" class="btn">Save my booking</button>
+      <button type="button" class="btn btn-secondary" id="copy-booking">Copy booking details</button>
+      <p id="booking-status" class="status"></p>
+    </form>
+    <div id="booking-success" class="success" hidden>
+      <img class="logo-small" src="/images/logo.jpg" alt="TC Lawn Care Plus LLC logo">
+      <p class="success-msg">✅ Successfully booked</p>
+      <p>We will reach out — a team member will reach out, usually within the hour.</p>
+      <button type="button" class="btn" id="book-another">Book another job</button>
+    </div>
+  </section>
+
+  <section class="card" id="owner">
+    <h2>Owner Side</h2>
+    <p class="white">This area is for the page owner only.</p>
+    <div id="owner-locked">
+      <form id="owner-pin-form" class="form-card">
+        <h3 id="owner-pin-title">Enter owner PIN</h3>
+        <p class="form-note" id="owner-pin-note">Enter your owner PIN to see bookings.</p>
+        <label>Owner PIN <input name="pin" type="password" required maxlength="64" autocomplete="current-password"></label>
+        <button type="submit" class="btn">Unlock owner side</button>
+        <p id="owner-pin-status" class="status"></p>
+      </form>
+    </div>
+    <div id="owner-unlocked" hidden>
+      <p class="white" id="new-count"></p>
+      <div id="owner-bookings"></div>
+      <form id="ding-email-form" class="form-card">
+        <h3>Booking ding — email setting</h3>
+        <p class="form-note">New-booking alert emails go to this address. Change it any time.</p>
+        <p class="white" id="ding-current"></p>
+        <label>New ding email <input name="email" type="email" required maxlength="200"></label>
+        <button type="submit" class="btn">Save ding email</button>
+        <p id="ding-status" class="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <a class="book-now-long" href="#booking">Book Now — we will reach out</a>
+  <p>TC Lawn Care Plus LLC — we will reach out, usually within the hour.</p>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>
