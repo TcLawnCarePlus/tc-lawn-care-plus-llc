@@ -35,7 +35,14 @@ body {
 #video-popup[hidden] { display: none; }
 .video-popup-box { width: min(680px, 94%); position: relative; }
 .video-popup-box video { width: 100%; border-radius: 12px; border: 3px solid var(--gold); background: #000; }
+.video-popup-box .btn { display: block; width: 100%; text-align: center; margin-top: 12px; text-decoration: none; box-sizing: border-box; }
 #video-popup-close { position: absolute; top: -12px; right: -12px; width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--gold); color: #111; font-size: 1.3rem; font-weight: 800; line-height: 1; cursor: pointer; }
+main img, header img { cursor: zoom-in; }
+#img-lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 12px; }
+#img-lightbox[hidden] { display: none; }
+.img-lightbox-box { width: min(860px, 96%); max-height: 92vh; position: relative; }
+.img-lightbox-box img { width: 100%; max-height: 92vh; object-fit: contain; border-radius: 12px; border: 3px solid var(--gold); background: #000; cursor: zoom-out; }
+#img-lightbox-close { position: absolute; top: -12px; right: -12px; width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--gold); color: #111; font-size: 1.3rem; font-weight: 800; line-height: 1; cursor: pointer; }
 .banner h1 { font-size: clamp(2rem, 8vw, 3.4rem); margin: 12px 0 4px; text-shadow: 0 2px 0 #000, 0 0 24px rgba(163,230,53,0.45); }
 .c-dark { color: #fff; }
 .c-lime { color: var(--lime); }
@@ -62,7 +69,9 @@ main { max-width: 860px; margin: 0 auto; padding: 8px 12px 24px; }
   width: 100%; height: 100%; object-fit: cover; border-radius: 12px;
   border: 3px solid var(--gold); box-shadow: 0 6px 20px rgba(0,0,0,0.5);
 }
-.featured-pair img { aspect-ratio: 3 / 4; }
+.featured-pair img { aspect-ratio: 3 / 4; height: auto; }
+.featured-pair figure { margin-bottom: 8px; }
+.featured-pair figcaption { line-height: 1.35; padding: 10px 4px 8px; }
 .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .gallery img { aspect-ratio: 4 / 3; }
 figcaption { text-align: center; padding: 8px 4px 4px; font-weight: 600; }

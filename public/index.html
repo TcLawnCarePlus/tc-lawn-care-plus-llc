@@ -10,7 +10,7 @@
 <header class="top">
   <img class="logo" src="/images/logo.jpg" alt="TC Lawn Care Plus LLC logo">
   <div class="motto">
-    <img class="motto-man" src="/images/little-man-weed-wacker.webp" alt="Man in uniform with a weed wacker">
+    <img class="motto-man" src="/images/little-man-weed-wacker.webp" alt="T. Craig with a weed wacker">
     <p>Where the grass will grow is where we will mow</p>
   </div>
   <video class="video-strip" src="/videos/walking-strip.mp4" autoplay muted loop playsinline aria-label="Man in uniform walking and weed whacking"></video>
@@ -148,10 +148,17 @@
   <video id="corner-video-el" src="/videos/book-now-corner.mp4" autoplay muted loop playsinline aria-label="Crew saying book now"></video>
   <button id="corner-video-dismiss" aria-label="Hide video">×</button>
 </div>
+<div id="img-lightbox" hidden>
+  <div class="img-lightbox-box">
+    <button id="img-lightbox-close" aria-label="Close picture">×</button>
+    <img id="img-lightbox-el" src="" alt="">
+  </div>
+</div>
 <div id="video-popup" hidden>
   <div class="video-popup-box">
     <button id="video-popup-close" aria-label="Close video">×</button>
     <video id="video-popup-el" src="/videos/book-now-corner.mp4" controls playsinline></video>
+    <a id="video-popup-book" class="btn" href="#booking">Book Now</a>
   </div>
 </div>
 <script src="/app.js"></script>

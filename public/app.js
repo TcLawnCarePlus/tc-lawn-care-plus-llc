@@ -116,6 +116,14 @@
       cornerVideo.muted = true;
       cornerVideo.play().catch(function () {});
     });
+    // Book Now under the popped-up video: close the player, then the link
+    // jumps to the booking form.
+    $("video-popup-book").addEventListener("click", function () {
+      popupVideo.pause();
+      popup.hidden = true;
+      cornerVideo.muted = true;
+      cornerVideo.play().catch(function () {});
+    });
     popup.addEventListener("click", function (e) {
       if (e.target === popup) {
         popupVideo.pause();
@@ -128,6 +136,30 @@
       e.stopPropagation();
       cornerVideo.pause();
       cornerBox.hidden = true;
+    });
+  }
+
+  // ---- Clickable pictures -------------------------------------------------
+  // Every picture on the page opens bigger, so visitors can see it better.
+  var imgBox = $("img-lightbox");
+  var imgEl = $("img-lightbox-el");
+  if (imgBox && imgEl) {
+    document.querySelectorAll("img:not(#img-lightbox-el)").forEach(function (pic) {
+      pic.addEventListener("click", function () {
+        imgEl.src = pic.currentSrc || pic.src;
+        imgEl.alt = pic.alt || "";
+        imgBox.hidden = false;
+      });
+    });
+    $("img-lightbox-close").addEventListener("click", function () {
+      imgBox.hidden = true;
+      imgEl.removeAttribute("src");
+    });
+    imgBox.addEventListener("click", function (e) {
+      if (e.target === imgBox) {
+        imgBox.hidden = true;
+        imgEl.removeAttribute("src");
+      }
     });
   }
 
