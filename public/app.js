@@ -139,17 +139,34 @@
     });
   }
 
+  // ---- Past Jobs folder tab ----------------------------------------------
+  // The Past Jobs tab opens like a folder; it stays blank until Ron adds
+  // jobs, video, and pictures to it.
+  var pastTab = $("past-jobs-tab");
+  var pastFolder = $("past-jobs-folder");
+  if (pastTab && pastFolder) {
+    pastTab.addEventListener("click", function () {
+      var open = pastFolder.hidden;
+      pastFolder.hidden = !open;
+      pastTab.setAttribute("aria-expanded", open ? "true" : "false");
+      var arrow = pastTab.querySelector(".past-jobs-arrow");
+      if (arrow) arrow.textContent = open ? "▾" : "▸";
+    });
+  }
+
   // ---- Clickable pictures -------------------------------------------------
   // Every picture on the page opens bigger, so visitors can see it better.
+  // Delegated, so pictures added later (like future Past Jobs pictures)
+  // open bigger too.
   var imgBox = $("img-lightbox");
   var imgEl = $("img-lightbox-el");
   if (imgBox && imgEl) {
-    document.querySelectorAll("img:not(#img-lightbox-el)").forEach(function (pic) {
-      pic.addEventListener("click", function () {
-        imgEl.src = pic.currentSrc || pic.src;
-        imgEl.alt = pic.alt || "";
-        imgBox.hidden = false;
-      });
+    document.addEventListener("click", function (e) {
+      var pic = e.target.closest ? e.target.closest("img:not(#img-lightbox-el)") : null;
+      if (!pic) return;
+      imgEl.src = pic.currentSrc || pic.src;
+      imgEl.alt = pic.alt || "";
+      imgBox.hidden = false;
     });
     $("img-lightbox-close").addEventListener("click", function () {
       imgBox.hidden = true;

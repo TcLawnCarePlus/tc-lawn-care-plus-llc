@@ -109,6 +109,9 @@ main { max-width: 860px; margin: 0 auto; padding: 8px 12px 24px; }
 .featured-pair img { aspect-ratio: 3 / 4; height: auto; }
 .featured-pair figure { margin-bottom: 16px; }
 .featured-pair figcaption { line-height: 1.6; font-size: 1.05rem; padding: 14px 6px 12px; }
+.past-jobs-tab { display: flex; justify-content: space-between; align-items: center; width: 100%; background: var(--gold); color: #111; border: 0; border-radius: 10px; padding: 14px 18px; font-size: 1.2rem; font-weight: 900; cursor: pointer; }
+.past-jobs-folder { margin-top: 14px; }
+.past-jobs-folder[hidden] { display: none; }
 .featured-pair { gap: 22px; }
 .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .gallery img { aspect-ratio: 4 / 3; }
