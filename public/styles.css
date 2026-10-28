@@ -32,7 +32,29 @@ header, main { position: relative; z-index: 1; }
 .logo-small { max-width: 220px; width: 70%; border-radius: 10px; background: #fff; }
 .motto { display: flex; align-items: center; justify-content: center; gap: 14px; max-width: 680px; margin: 14px auto 2px; }
 .motto-man { width: 76px; height: 76px; object-fit: cover; border-radius: 50%; border: 3px solid var(--gold); box-shadow: 0 4px 16px rgba(0,0,0,0.5); flex: none; }
-.motto p { font-size: clamp(1.15rem, 4.5vw, 1.6rem); font-weight: 900; color: #fff; text-shadow: 0 2px 0 #000, 0 0 18px rgba(163,230,53,0.45); margin: 0; text-align: left; }
+.motto p { font-size: clamp(1.3rem, 5.5vw, 1.9rem); font-weight: 900; letter-spacing: 0.3px; color: #fff; text-shadow: 0 2px 0 #000, 0 0 24px rgba(163,230,53,0.65); margin: 0; text-align: left; background: rgba(0,0,0,0.35); padding: 10px 14px; border-radius: 12px; border: 2px solid var(--gold); }
+/* Motto entrance: each word shoots in from a different direction,
+   then settles to form the quote. */
+.motto .w { display: inline-block; animation-duration: 0.6s; animation-timing-function: cubic-bezier(0.2, 0.9, 0.3, 1.2); animation-fill-mode: backwards; }
+.motto .from-left { animation-name: fly-left; }
+.motto .from-right { animation-name: fly-right; }
+.motto .from-top { animation-name: fly-top; }
+.motto .from-bottom { animation-name: fly-bottom; }
+.motto .w:nth-child(1) { animation-delay: 0s; }
+.motto .w:nth-child(2) { animation-delay: 0.08s; }
+.motto .w:nth-child(3) { animation-delay: 0.16s; }
+.motto .w:nth-child(4) { animation-delay: 0.24s; }
+.motto .w:nth-child(5) { animation-delay: 0.32s; }
+.motto .w:nth-child(6) { animation-delay: 0.4s; }
+.motto .w:nth-child(7) { animation-delay: 0.48s; }
+.motto .w:nth-child(8) { animation-delay: 0.56s; }
+.motto .w:nth-child(9) { animation-delay: 0.64s; }
+.motto .w:nth-child(10) { animation-delay: 0.72s; }
+@keyframes fly-left { from { opacity: 0; transform: translateX(-70px) rotate(-8deg); } to { opacity: 1; transform: translateX(0) rotate(0); } }
+@keyframes fly-right { from { opacity: 0; transform: translateX(70px) rotate(8deg); } to { opacity: 1; transform: translateX(0) rotate(0); } }
+@keyframes fly-top { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fly-bottom { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .motto .w { animation: none; } }
 .video-strip { display: block; width: min(680px, 94%); height: 190px; object-fit: cover; margin: 14px auto 2px; border-radius: 12px; border: 3px solid var(--gold); box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
 #owner-story figure { margin: 0 0 12px; text-align: center; }
 #owner-story img { width: 100%; max-width: 420px; border-radius: 12px; border: 3px solid var(--gold); box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
