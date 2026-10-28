@@ -2,7 +2,8 @@
 (function () {
   "use strict";
   var pickedStars = 0;
-  var ownerPin = sessionStorage.getItem("tcOwnerPin") || "";
+  var ownerLogin = sessionStorage.getItem("tcOwnerLogin") || "";
+  var ownerPassword = sessionStorage.getItem("tcOwnerPassword") || "";
 
   function $(id) { return document.getElementById(id); }
   function esc(s) {
@@ -102,7 +103,7 @@
   });
 
   // ---- Owner side ---------------------------------------------------------
-  function ownerHeaders() { return { "Content-Type": "application/json", "x-owner-pin": ownerPin }; }
+  function ownerHeaders() { return { "Content-Type": "application/json", "x-owner-login": ownerLogin, "x-owner-password": ownerPassword }; }
   function renderOwnerBookings(data) {
     $("new-count").textContent = data.newCount
       ? "You have " + data.newCount + " new booking notification" + (data.newCount === 1 ? "" : "s") + "."
@@ -153,36 +154,41 @@
     loadOwner();
   }
   fetch("/api/owner/status").then(function (r) { return r.json(); }).then(function (j) {
-    if (j.pinSet) {
-      $("owner-pin-title").textContent = "Enter owner PIN";
-      $("owner-pin-note").textContent = "Enter your owner PIN to see bookings.";
-      if (ownerPin) {
-        fetch("/api/owner/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pin: ownerPin }) })
+    if (j.loginSet) {
+      $("owner-login-title").textContent = "Owner login";
+      $("owner-login-note").textContent = "Log in to see bookings.";
+      if (ownerLogin && ownerPassword) {
+        fetch("/api/owner/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ login: ownerLogin, password: ownerPassword }) })
           .then(function (r) { return r.json(); }).then(function (v) { if (v.ok) unlockOwner(); });
       }
     } else {
-      $("owner-pin-title").textContent = "Set your owner PIN";
-      $("owner-pin-note").textContent = "No owner PIN is set yet. Choose one now — only you will use it to open the owner side.";
+      $("owner-login-title").textContent = "Set your owner login";
+      $("owner-login-note").textContent = "No owner login is set yet. Choose a login and a password now — only you will use them to open the owner side.";
     }
   }).catch(function () {});
-  $("owner-pin-form").addEventListener("submit", function (e) {
+  $("owner-login-form").addEventListener("submit", function (e) {
     e.preventDefault();
-    var pin = e.target.pin.value;
+    var login = e.target.login.value;
+    var password = e.target.password.value;
     fetch("/api/owner/status").then(function (r) { return r.json(); }).then(function (j) {
-      if (!j.pinSet) {
-        return fetch("/api/owner/pin", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pin: pin }) })
+      if (!j.loginSet) {
+        return fetch("/api/owner/setup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ login: login, password: password }) })
           .then(function (r) { return r.json().then(function (x) { return { ok: r.ok, x: x }; }); })
           .then(function (res) {
-            if (!res.ok) { $("owner-pin-status").textContent = res.x.error || "Could not set the PIN."; return; }
-            ownerPin = pin; sessionStorage.setItem("tcOwnerPin", pin); unlockOwner();
+            if (!res.ok) { $("owner-login-status").textContent = res.x.error || "Could not set the login."; return; }
+            ownerLogin = login; ownerPassword = password;
+            sessionStorage.setItem("tcOwnerLogin", login); sessionStorage.setItem("tcOwnerPassword", password);
+            unlockOwner();
           });
       }
-      return fetch("/api/owner/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pin: pin }) })
+      return fetch("/api/owner/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ login: login, password: password }) })
         .then(function (r) { return r.json(); }).then(function (v) {
-          if (!v.ok) { $("owner-pin-status").textContent = "That PIN is incorrect."; return; }
-          ownerPin = pin; sessionStorage.setItem("tcOwnerPin", pin); unlockOwner();
+          if (!v.ok) { $("owner-login-status").textContent = "That login or password is incorrect."; return; }
+          ownerLogin = login; ownerPassword = password;
+          sessionStorage.setItem("tcOwnerLogin", login); sessionStorage.setItem("tcOwnerPassword", password);
+          unlockOwner();
         });
-    }).catch(function () { $("owner-pin-status").textContent = "Could not reach the owner side. Try again."; });
+    }).catch(function () { $("owner-login-status").textContent = "Could not reach the owner side. Try again."; });
   });
   $("ding-email-form").addEventListener("submit", function (e) {
     e.preventDefault();

@@ -219,18 +219,18 @@ async function setSetting(key, value) {
   }
 }
 
-// Owner PIN: scrypt hash, stored as "scrypt:<saltHex>:<hashHex>".
-function hashPin(pin) {
+// Owner password: scrypt hash, stored as "scrypt:<saltHex>:<hashHex>".
+function hashPassword(password) {
   const salt = crypto.randomBytes(16).toString("hex");
-  const hash = crypto.scryptSync(String(pin), salt, 64).toString("hex");
+  const hash = crypto.scryptSync(String(password), salt, 64).toString("hex");
   return `scrypt:${salt}:${hash}`;
 }
 
-function verifyPin(pin, stored) {
+function verifyPassword(password, stored) {
   if (!stored || !stored.startsWith("scrypt:")) return false;
   const [, salt, expected] = stored.split(":");
   if (!salt || !expected) return false;
-  const actual = crypto.scryptSync(String(pin), salt, 64);
+  const actual = crypto.scryptSync(String(password), salt, 64);
   const expectedBuf = Buffer.from(expected, "hex");
   if (actual.length !== expectedBuf.length) return false;
   return crypto.timingSafeEqual(actual, expectedBuf);
@@ -248,6 +248,6 @@ module.exports = {
   listReviews,
   getSetting,
   setSetting,
-  hashPin,
-  verifyPin,
+  hashPassword,
+  verifyPassword,
 };

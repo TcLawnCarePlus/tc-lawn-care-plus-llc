@@ -2,7 +2,8 @@
 // Serves the static page in public/ plus a small JSON API:
 //   bookings (public create; owner list/update/remove)
 //   reviews  (public create/list)
-//   owner PIN (set on first open, hashed server-side) + ding-email setting
+//   owner login + password (set on first open, password hashed server-side)
+//   + ding-email setting
 // A failed email ding never blocks a booking from saving.
 const express = require("express");
 const path = require("path");
@@ -25,43 +26,47 @@ app.get("/api/health", (req, res) => {
   res.json({ ok: true, db: db.dbMode() });
 });
 
-// ---- Owner PIN -----------------------------------------------------------
+// ---- Owner login ---------------------------------------------------------
 app.get("/api/owner/status", async (req, res) => {
-  const stored = await db.getSetting("owner_pin_hash");
-  res.json({ pinSet: Boolean(stored) });
+  const stored = await db.getSetting("owner_password_hash");
+  res.json({ loginSet: Boolean(stored) });
 });
 
-// Set the PIN on first open, or change it when the current PIN is supplied
-// in the x-owner-pin header.
-app.post("/api/owner/pin", async (req, res) => {
-  const pin = clean(req.body && req.body.pin);
-  if (pin.length < 4 || pin.length > 64) {
-    return res.status(400).json({ error: "PIN must be 4 to 64 characters." });
+// Set the login on first open. Only possible while none is set yet; the
+// owner picks both values himself on the page, never in chat.
+app.post("/api/owner/setup", async (req, res) => {
+  const existing = await db.getSetting("owner_password_hash");
+  if (existing) return res.status(409).json({ error: "An owner login is already set." });
+  const login = clean(req.body && req.body.login);
+  const password = clean(req.body && req.body.password);
+  if (login.length < 3 || login.length > 64) {
+    return res.status(400).json({ error: "Login must be 3 to 64 characters." });
   }
-  const stored = await db.getSetting("owner_pin_hash");
-  if (stored) {
-    const current = req.headers["x-owner-pin"] || "";
-    if (!db.verifyPin(current, stored)) {
-      return res.status(401).json({ error: "Current PIN is required to change the PIN." });
-    }
+  if (password.length < 6 || password.length > 64) {
+    return res.status(400).json({ error: "Password must be 6 to 64 characters." });
   }
-  await db.setSetting("owner_pin_hash", db.hashPin(pin));
+  await db.setSetting("owner_login", login);
+  await db.setSetting("owner_password_hash", db.hashPassword(password));
   res.json({ ok: true });
 });
 
 app.post("/api/owner/verify", async (req, res) => {
-  const stored = await db.getSetting("owner_pin_hash");
-  if (!stored) return res.json({ ok: false, pinSet: false });
-  const pin = clean(req.body && req.body.pin);
-  res.json({ ok: db.verifyPin(pin, stored), pinSet: true });
+  const stored = await db.getSetting("owner_password_hash");
+  if (!stored) return res.json({ ok: false, loginSet: false });
+  const login = clean(req.body && req.body.login);
+  const password = clean(req.body && req.body.password);
+  const savedLogin = await db.getSetting("owner_login");
+  res.json({ ok: login === savedLogin && db.verifyPassword(password, stored), loginSet: true });
 });
 
 async function ownerAuth(req, res, next) {
-  const stored = await db.getSetting("owner_pin_hash");
-  if (!stored) return res.status(401).json({ error: "Owner PIN is not set yet." });
-  const pin = req.headers["x-owner-pin"] || "";
-  if (!db.verifyPin(pin, stored)) {
-    return res.status(401).json({ error: "Owner PIN is incorrect." });
+  const stored = await db.getSetting("owner_password_hash");
+  if (!stored) return res.status(401).json({ error: "Owner login is not set yet." });
+  const login = req.headers["x-owner-login"] || "";
+  const password = req.headers["x-owner-password"] || "";
+  const savedLogin = await db.getSetting("owner_login");
+  if (login !== savedLogin || !db.verifyPassword(password, stored)) {
+    return res.status(401).json({ error: "Owner login is incorrect." });
   }
   next();
 }
