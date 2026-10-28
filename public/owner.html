@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TC Lawn Care Plus LLC — Owner Side</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main>
+  <section class="card" id="owner">
+    <h2>Owner Side</h2>
+    <p class="white">This area is for the page owner only.</p>
+    <div id="owner-locked">
+      <form id="owner-login-form" class="form-card">
+        <h3 id="owner-login-title">Owner login</h3>
+        <p class="form-note" id="owner-login-note">Log in to see bookings.</p>
+        <label>Login <input name="login" required maxlength="64" autocomplete="username"></label>
+        <label>Password <input name="password" type="password" required maxlength="64" autocomplete="current-password"></label>
+        <button type="submit" class="btn">Log in</button>
+        <p id="owner-login-status" class="status"></p>
+      </form>
+    </div>
+    <div id="owner-unlocked" hidden>
+      <p class="white" id="new-count"></p>
+      <div id="owner-bookings"></div>
+      <form id="ding-email-form" class="form-card">
+        <h3>Booking ding — email setting</h3>
+        <p class="form-note">New-booking alert emails go to this address. Change it any time.</p>
+        <p class="white" id="ding-current"></p>
+        <label>New ding email <input name="email" type="email" required maxlength="200"></label>
+        <button type="submit" class="btn">Save ding email</button>
+        <p id="ding-status" class="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+<script src="/owner.js"></script>
+</body>
+</html>

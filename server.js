@@ -170,6 +170,13 @@ app.post("/api/reviews", async (req, res) => {
   res.status(201).json(saved);
 });
 
+// Owner panel: served only at /owner-side, unlinked from the public page,
+// so customers browsing the site never see that an owner side exists.
+// The login + password still guard everything behind it.
+app.get("/owner-side", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "owner.html"));
+});
+
 // Fallback: anything that is not an API route serves the page.
 app.use((req, res, next) => {
   if (req.method === "GET" && !req.path.startsWith("/api")) {
