@@ -94,5 +94,42 @@
     f.reset(); f.hidden = false; $("booking-success").hidden = true;
   });
 
+  // ---- Corner video -------------------------------------------------------
+  // Stays in the corner, muted, while the visitor scrolls. Tapping it opens
+  // the same video bigger, with the sound on. Closing it goes back to the
+  // muted corner player.
+  var cornerBox = $("corner-video");
+  var cornerVideo = $("corner-video-el");
+  var popup = $("video-popup");
+  var popupVideo = $("video-popup-el");
+  if (cornerBox && cornerVideo && popup && popupVideo) {
+    cornerVideo.addEventListener("click", function () {
+      popupVideo.currentTime = cornerVideo.currentTime || 0;
+      popupVideo.muted = false;
+      popup.hidden = false;
+      cornerVideo.pause();
+      popupVideo.play().catch(function () {});
+    });
+    $("video-popup-close").addEventListener("click", function () {
+      popupVideo.pause();
+      popup.hidden = true;
+      cornerVideo.muted = true;
+      cornerVideo.play().catch(function () {});
+    });
+    popup.addEventListener("click", function (e) {
+      if (e.target === popup) {
+        popupVideo.pause();
+        popup.hidden = true;
+        cornerVideo.muted = true;
+        cornerVideo.play().catch(function () {});
+      }
+    });
+    $("corner-video-dismiss").addEventListener("click", function (e) {
+      e.stopPropagation();
+      cornerVideo.pause();
+      cornerBox.hidden = true;
+    });
+  }
+
   loadReviews();
 })();
