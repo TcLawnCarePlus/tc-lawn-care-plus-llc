@@ -24,6 +24,7 @@ body {
 .motto { display: flex; align-items: center; justify-content: center; gap: 14px; max-width: 680px; margin: 14px auto 2px; }
 .motto-man { width: 76px; height: 76px; object-fit: cover; border-radius: 50%; border: 3px solid var(--gold); box-shadow: 0 4px 16px rgba(0,0,0,0.5); flex: none; }
 .motto p { font-size: clamp(1.15rem, 4.5vw, 1.6rem); font-weight: 800; color: #fff; text-shadow: 0 2px 0 #000, 0 0 18px rgba(163,230,53,0.45); margin: 0; text-align: left; }
+.video-strip { display: block; width: min(680px, 94%); height: 190px; object-fit: cover; margin: 14px auto 2px; border-radius: 12px; border: 3px solid var(--gold); box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
 .banner h1 { font-size: clamp(2rem, 8vw, 3.4rem); margin: 12px 0 4px; text-shadow: 0 2px 0 #000, 0 0 24px rgba(163,230,53,0.45); }
 .c-dark { color: #fff; }
 .c-lime { color: var(--lime); }
