@@ -36,7 +36,7 @@ async function sendDing({ to, booking }) {
     await transporter.sendMail({
       from: process.env.SMTP_FROM || process.env.SMTP_USER,
       to,
-      subject: `New booking from ${booking.name}`,
+      subject: `!!!!LAWNWORK!!!! - New booking from ${booking.name}`,
       text: lines.join("\n"),
     });
     return { ok: true, status: "sent" };
