@@ -68,8 +68,6 @@
     $("owner-locked").hidden = true;
     $("owner-unlocked").hidden = false;
     loadOwner();
-    var h = $("bookings-heading");
-    if (h && h.scrollIntoView) h.scrollIntoView();
   }
   fetch("/api/owner/status").then(function (r) { return r.json(); }).then(function (j) {
     if (j.loginSet) {
