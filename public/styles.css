@@ -135,6 +135,9 @@ figcaption { text-align: center; padding: 8px 4px 4px; font-weight: 600; }
 .review footer { color: var(--lime); font-weight: 700; margin-top: 8px; }
 /* Forms only: transparent logo watermark behind the writing. */
 .form-card { position: relative; overflow: hidden; background: rgba(255,255,255,0.95); color: #111; border-radius: 14px; padding: 18px; margin-top: 14px; }
+/* Text inside the white forms must stay dark: the page rule that makes
+   card paragraphs white would otherwise turn form text invisible. */
+.form-card p { color: #111; }
 .form-card::before {
   content: ""; position: absolute; inset: 0;
   background: url("/images/logo.jpg") center / contain no-repeat;
@@ -144,9 +147,10 @@ figcaption { text-align: center; padding: 8px 4px 4px; font-weight: 600; }
 .form-card h3 { color: var(--green); margin-top: 0; }
 .form-card .form-note { color: #333; }
 .form-card label { display: block; margin: 12px 0; font-weight: 600; color: #111; }
-.form-card input, .form-card textarea {
+.form-card input, .form-card textarea, .form-card select {
   display: block; width: 100%; margin-top: 6px; padding: 10px;
   border: 2px solid var(--green); border-radius: 8px; font-size: 1rem;
+  background: #fff; color: #111;
 }
 .btn {
   background: var(--gold); color: #111; border: 0; border-radius: 10px;
