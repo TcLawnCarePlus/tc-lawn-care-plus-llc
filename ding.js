@@ -26,6 +26,8 @@ async function sendDing({ to, booking }) {
       booking.phone ? `Customer phone: ${booking.phone}` : null,
       `Where it is: ${booking.location}`,
       booking.yardSize ? `Yard size estimate: ${booking.yardSize}` : null,
+      booking.service ? `Service: ${booking.service}` : null,
+      booking.preferredDate ? `Preferred date: ${booking.preferredDate}` : null,
       `What needs done: ${booking.workNeeded}`,
       "",
       `Booking ID: ${booking.id}`,

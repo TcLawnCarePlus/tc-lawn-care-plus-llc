@@ -131,6 +131,19 @@
       <label>Your phone (so the team can reach you) <input name="phone" type="tel" maxlength="40"></label>
       <label>Where it is <input name="location" required maxlength="300" placeholder="Address or area"></label>
       <label>Yard size estimate <input name="yardSize" maxlength="100" placeholder="For example: small, medium, large, about half an acre"></label>
+      <label>What service do you need?
+        <select name="service" required>
+          <option value="" selected>Choose a service</option>
+          <option>Lawn Mowing</option>
+          <option>Landscaping</option>
+          <option>Mulching</option>
+          <option>Hedge Trimming</option>
+          <option>Tree &amp; Stump Removal</option>
+          <option>Seasonal Clean-Ups</option>
+          <option>Something else (describe below)</option>
+        </select>
+      </label>
+      <label>Preferred date (optional) <input name="preferredDate" type="date"></label>
       <label>What needs to be done <textarea name="workNeeded" required maxlength="2000" rows="4"></textarea></label>
       <button type="submit" class="btn">Save my booking</button>
       <button type="button" class="btn btn-secondary" id="copy-booking">Copy booking details</button>

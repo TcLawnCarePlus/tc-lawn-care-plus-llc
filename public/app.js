@@ -58,6 +58,8 @@
       f.phone.value ? "Phone: " + f.phone.value : null,
       "Where it is: " + f.location.value,
       f.yardSize.value ? "Yard size estimate: " + f.yardSize.value : null,
+      "Service: " + f.service.value,
+      f.preferredDate.value ? "Preferred date: " + f.preferredDate.value : null,
       "What needs done: " + f.workNeeded.value,
       "We will reach out — a team member will reach out, usually within the hour.",
     ].filter(Boolean).join("\n");
@@ -67,7 +69,7 @@
     var f = e.target;
     fetch("/api/bookings", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: f.name.value, phone: f.phone.value, location: f.location.value, yardSize: f.yardSize.value, workNeeded: f.workNeeded.value }),
+      body: JSON.stringify({ name: f.name.value, phone: f.phone.value, location: f.location.value, yardSize: f.yardSize.value, service: f.service.value, preferredDate: f.preferredDate.value, workNeeded: f.workNeeded.value }),
     }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (res) {
         if (!res.ok) { $("booking-status").textContent = res.j.error || "Could not save the booking."; return; }

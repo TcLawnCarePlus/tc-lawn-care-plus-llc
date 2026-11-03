@@ -15,6 +15,8 @@ function mapBooking(r) {
     id: r.id,
     location: r.location,
     yardSize: r.yard_size,
+    service: r.service || "",
+    preferredDate: r.preferred_date || "",
     workNeeded: r.work_needed,
     name: r.name,
     phone: r.phone,
@@ -48,6 +50,8 @@ async function init() {
       id SERIAL PRIMARY KEY,
       location TEXT NOT NULL,
       yard_size TEXT DEFAULT '',
+      service TEXT DEFAULT '',
+      preferred_date TEXT DEFAULT '',
       work_needed TEXT NOT NULL,
       name TEXT NOT NULL,
       phone TEXT DEFAULT '',
@@ -55,6 +59,9 @@ async function init() {
       ding_status TEXT NOT NULL DEFAULT 'pending',
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )`);
+    // Columns added after the table first existed: add them if missing.
+    await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS service TEXT DEFAULT ''`);
+    await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS preferred_date TEXT DEFAULT ''`);
     await pool.query(`CREATE TABLE IF NOT EXISTS reviews (
       id SERIAL PRIMARY KEY,
       name TEXT NOT NULL,
@@ -77,6 +84,8 @@ async function init() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       location TEXT NOT NULL,
       yard_size TEXT DEFAULT '',
+      service TEXT DEFAULT '',
+      preferred_date TEXT DEFAULT '',
       work_needed TEXT NOT NULL,
       name TEXT NOT NULL,
       phone TEXT DEFAULT '',
@@ -84,6 +93,9 @@ async function init() {
       ding_status TEXT NOT NULL DEFAULT 'pending',
       created_at TEXT NOT NULL
     )`);
+    // Columns added after the table first existed: add them if missing.
+    try { sqlite.exec(`ALTER TABLE bookings ADD COLUMN service TEXT DEFAULT ''`); } catch (_) {}
+    try { sqlite.exec(`ALTER TABLE bookings ADD COLUMN preferred_date TEXT DEFAULT ''`); } catch (_) {}
     sqlite.exec(`CREATE TABLE IF NOT EXISTS reviews (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
@@ -108,18 +120,18 @@ async function createBooking(b) {
   const now = new Date().toISOString();
   if (mode === "postgres") {
     const { rows } = await pool.query(
-      `INSERT INTO bookings (location, yard_size, work_needed, name, phone, status, ding_status, created_at)
-       VALUES ($1,$2,$3,$4,$5,'new',$6,$7) RETURNING *`,
-      [b.location, b.yardSize || "", b.workNeeded, b.name, b.phone || "", b.dingStatus || "pending", now]
+      `INSERT INTO bookings (location, yard_size, service, preferred_date, work_needed, name, phone, status, ding_status, created_at)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,'new',$8,$9) RETURNING *`,
+      [b.location, b.yardSize || "", b.service || "", b.preferredDate || "", b.workNeeded, b.name, b.phone || "", b.dingStatus || "pending", now]
     );
     return mapBooking(rows[0]);
   }
   const info = sqlite
     .prepare(
-      `INSERT INTO bookings (location, yard_size, work_needed, name, phone, status, ding_status, created_at)
-       VALUES (?,?,?,?,?,'new',?,?)`
+      `INSERT INTO bookings (location, yard_size, service, preferred_date, work_needed, name, phone, status, ding_status, created_at)
+       VALUES (?,?,?,?,?,?,?,'new',?,?)`
     )
-    .run(b.location, b.yardSize || "", b.workNeeded, b.name, b.phone || "", b.dingStatus || "pending", now);
+    .run(b.location, b.yardSize || "", b.service || "", b.preferredDate || "", b.workNeeded, b.name, b.phone || "", b.dingStatus || "pending", now);
   return getBooking(info.lastInsertRowid);
 }
 

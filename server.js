@@ -76,12 +76,14 @@ app.post("/api/bookings", async (req, res) => {
   const booking = {
     location: clean(req.body && req.body.location),
     yardSize: clean(req.body && req.body.yardSize),
+    service: clean(req.body && req.body.service),
+    preferredDate: clean(req.body && req.body.preferredDate),
     workNeeded: clean(req.body && req.body.workNeeded),
     name: clean(req.body && req.body.name),
     phone: clean(req.body && req.body.phone),
   };
-  if (!booking.location || !booking.workNeeded || !booking.name) {
-    return res.status(400).json({ error: "Where it is, what needs done, and your name are required." });
+  if (!booking.location || !booking.workNeeded || !booking.name || !booking.service) {
+    return res.status(400).json({ error: "Where it is, what needs done, your name, and a service are required." });
   }
   // Save FIRST. The ding is best-effort afterwards and never blocks this.
   const dingReady = smtpConfigured();

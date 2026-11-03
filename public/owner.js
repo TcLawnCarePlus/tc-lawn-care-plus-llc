@@ -32,6 +32,8 @@
         (b.phone ? "<p>Customer phone: " + esc(b.phone) + "</p>" : "") +
         "<p>Where it is: " + esc(b.location) + "</p>" +
         (b.yardSize ? "<p>Yard size estimate: " + esc(b.yardSize) + "</p>" : "") +
+        (b.service ? "<p>Service: " + esc(b.service) + "</p>" : "") +
+        (b.preferredDate ? "<p>Preferred date: " + esc(b.preferredDate) + "</p>" : "") +
         "<p>What needs done: " + esc(b.workNeeded) + "</p>" +
         "<p>Status: " + esc(b.status) + " · <span class='ding'>" + dingLabel(b.dingStatus) + "</span></p>" +
         "<p>Received: " + esc(b.createdAt) + "</p>" +
