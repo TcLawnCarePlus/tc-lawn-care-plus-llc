@@ -164,7 +164,7 @@
   var imgEl = $("img-lightbox-el");
   if (imgBox && imgEl) {
     document.addEventListener("click", function (e) {
-      var pic = e.target.closest ? e.target.closest("img:not(#img-lightbox-el)") : null;
+      var pic = e.target.closest ? e.target.closest("img:not(#img-lightbox-el):not(.no-lightbox)") : null;
       if (!pic) return;
       imgEl.src = pic.currentSrc || pic.src;
       imgEl.alt = pic.alt || "";

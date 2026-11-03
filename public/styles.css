@@ -58,6 +58,17 @@ header, main { position: relative; z-index: 1; }
 .video-strip { display: block; width: min(680px, 94%); height: 190px; object-fit: cover; margin: 14px auto 2px; border-radius: 12px; border: 3px solid var(--gold); box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
 #owner-story figure { margin: 0 0 12px; text-align: center; }
 #owner-story img { width: 100%; max-width: 420px; border-radius: 12px; border: 3px solid var(--gold); box-shadow: 0 6px 20px rgba(0,0,0,0.5); }
+/* Instagram QR code: top of the page and beside the corner video. */
+.ig-qr-top { text-align: right; }
+.ig-qr-top img { width: 84px; height: 84px; border-radius: 8px; background: #fff; padding: 4px; cursor: pointer; }
+.ig-qr-top p { margin: 2px 0 0; font-size: 0.85rem; font-weight: 700; color: #fff; }
+#corner-qr { position: fixed; right: 192px; bottom: 12px; width: 120px; z-index: 50; text-align: center; }
+#corner-qr img { width: 100%; border-radius: 10px; background: #fff; padding: 4px; box-sizing: border-box; border: 3px solid var(--gold); cursor: pointer; }
+#corner-qr p { margin: 2px 0 0; font-size: 0.8rem; font-weight: 700; color: #fff; text-shadow: 0 1px 2px #000; }
+@media (max-width: 420px) {
+  #corner-qr { width: 84px; right: 190px; }
+  .ig-qr-top img { width: 72px; height: 72px; }
+}
 #corner-video { position: fixed; right: 12px; bottom: 12px; width: 168px; z-index: 50; border-radius: 12px; overflow: hidden; border: 3px solid var(--gold); box-shadow: 0 8px 24px rgba(0,0,0,0.5); background: #000; }
 #corner-video video { width: 100%; display: block; }
 #corner-video[hidden] { display: none; }
