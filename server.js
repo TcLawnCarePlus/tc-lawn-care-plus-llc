@@ -11,6 +11,7 @@ const db = require("./db");
 const { smtpConfigured, sendDing } = require("./ding");
 
 const app = express();
+app.set("trust proxy", 1);
 app.use(express.json({ limit: "256kb" }));
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -157,15 +158,29 @@ app.put("/api/owner/ding-email", ownerAuth, async (req, res) => {
   res.json({ ok: true, email });
 });
 
-// ---- Start over (owner only) ----------------------------------------------
+// ---- Start over (no login needed) -----------------------------------------
 // Clears the owner login, password, and ding email so the owner side opens
-// like the first time. Bookings are NOT touched. Requires the owner to be
-// logged in AND to enter the start-over passcode.
-app.post("/api/owner/reset", ownerAuth, async (req, res) => {
+// like the first time. Bookings are NOT touched. This runs BEFORE login on
+// purpose, so a forgotten login can be replaced — the start-over passcode
+// is the only gate, so wrong guesses are limited: 5 wrong tries from one
+// address lock the reset out for 15 minutes.
+const resetAttempts = new Map(); // address -> { fails, lockedUntil }
+app.post("/api/owner/reset", async (req, res) => {
+  const ip = req.ip || "";
+  const rec = resetAttempts.get(ip);
+  if (rec && rec.lockedUntil && Date.now() < rec.lockedUntil) {
+    return res.status(429).json({ error: "Too many wrong passcodes. Try again in 15 minutes." });
+  }
+  if (rec && rec.lockedUntil && Date.now() >= rec.lockedUntil) resetAttempts.delete(ip);
   const passcode = clean(req.body && req.body.passcode);
   if (passcode !== OWNER_RESET_PASSCODE) {
+    const next = resetAttempts.get(ip) || { fails: 0, lockedUntil: 0 };
+    next.fails += 1;
+    if (next.fails >= 5) next.lockedUntil = Date.now() + 15 * 60 * 1000;
+    resetAttempts.set(ip, next);
     return res.status(403).json({ error: "That passcode is incorrect." });
   }
+  resetAttempts.delete(ip);
   await db.deleteSetting("owner_login");
   await db.deleteSetting("owner_password_hash");
   await db.deleteSetting("ding_email");

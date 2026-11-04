@@ -119,10 +119,9 @@
   });
   $("owner-reset-form").addEventListener("submit", function (e) {
     e.preventDefault();
-    if (!window.confirm("Clear the owner login, password, and ding email? Your bookings stay saved. You will set new ones right after.")) return;
-    var passcode = window.prompt("Enter the start-over passcode:");
+    var passcode = window.prompt("What's the passcode?");
     if (passcode === null) return;
-    fetch("/api/owner/reset", { method: "POST", headers: ownerHeaders(), body: JSON.stringify({ passcode: passcode }) })
+    fetch("/api/owner/reset", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ passcode: passcode }) })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (res) {
         if (!res.ok) { $("reset-status").textContent = res.j.error || "Could not start over."; return; }
