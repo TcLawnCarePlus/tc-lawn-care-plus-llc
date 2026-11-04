@@ -22,6 +22,11 @@ function validEmail(v) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v || "");
 }
 
+// Start-over passcode: the owner knows it; it is checked server-side before
+// the owner login, password, and ding email are cleared. Change this value
+// to change the passcode.
+const OWNER_RESET_PASSCODE = "7150";
+
 app.get("/api/health", (req, res) => {
   res.json({ ok: true, db: db.dbMode() });
 });
@@ -150,6 +155,21 @@ app.put("/api/owner/ding-email", ownerAuth, async (req, res) => {
   }
   await db.setSetting("ding_email", email);
   res.json({ ok: true, email });
+});
+
+// ---- Start over (owner only) ----------------------------------------------
+// Clears the owner login, password, and ding email so the owner side opens
+// like the first time. Bookings are NOT touched. Requires the owner to be
+// logged in AND to enter the start-over passcode.
+app.post("/api/owner/reset", ownerAuth, async (req, res) => {
+  const passcode = clean(req.body && req.body.passcode);
+  if (passcode !== OWNER_RESET_PASSCODE) {
+    return res.status(403).json({ error: "That passcode is incorrect." });
+  }
+  await db.deleteSetting("owner_login");
+  await db.deleteSetting("owner_password_hash");
+  await db.deleteSetting("ding_email");
+  res.json({ ok: true });
 });
 
 // ---- Reviews ---------------------------------------------------------------

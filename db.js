@@ -231,6 +231,14 @@ async function setSetting(key, value) {
   }
 }
 
+async function deleteSetting(key) {
+  if (mode === "postgres") {
+    await pool.query(`DELETE FROM settings WHERE key = $1`, [key]);
+  } else {
+    sqlite.prepare(`DELETE FROM settings WHERE key = ?`).run(key);
+  }
+}
+
 // Owner password: scrypt hash, stored as "scrypt:<saltHex>:<hashHex>".
 function hashPassword(password) {
   const salt = crypto.randomBytes(16).toString("hex");
@@ -260,6 +268,7 @@ module.exports = {
   listReviews,
   getSetting,
   setSetting,
+  deleteSetting,
   hashPassword,
   verifyPassword,
 };
