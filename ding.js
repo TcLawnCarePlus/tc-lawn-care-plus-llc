@@ -1,9 +1,17 @@
-// Booking ding email. Two send paths, in order:
-// 1. Gmail API over HTTPS (port 443) — the path that works on Render's free
+// Booking ding email. Send paths, in order:
+// 1. Resend API over HTTPS (port 443) — the working path on Render's free
 //    tier, where outbound SMTP ports 25, 465 and 587 are all blocked
-//    (since Sep 26, 2025). Needs GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET and
-//    GMAIL_REFRESH_TOKEN.
-// 2. SMTP via nodemailer — kept as a fallback for paid instances, where the
+//    (since Sep 26, 2025). Needs RESEND_API_KEY only — no OAuth, no token
+//    that can be revoked. Free plan: 3,000 emails/month, 100/day.
+//    NOTE: from onboarding@resend.dev only sends to the Resend account's
+//    OWN email address, so the Resend account must be created with the
+//    ding recipient's address (ronglass2000@gmail.com).
+// 2. Gmail API over HTTPS — kept as a fallback. Needs GMAIL_CLIENT_ID,
+//    GMAIL_CLIENT_SECRET and GMAIL_REFRESH_TOKEN. WARNING (Nov 11, 2026):
+//    refresh tokens obtained via the OAuth Playground were revoked within
+//    minutes of issuance (three failed tests, invalid_grant), even with
+//    the app In production — do not rely on this path.
+// 3. SMTP via nodemailer — kept as a fallback for paid instances, where the
 //    SMTP ports are unblocked.
 // A failed or unconfigured ding must NEVER block a booking from saving:
 // sendDing always resolves, and the caller records the returned status.
@@ -12,6 +20,10 @@ const { google } = require("googleapis");
 
 function smtpConfigured() {
   return Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+}
+
+function resendConfigured() {
+  return Boolean(process.env.RESEND_API_KEY);
 }
 
 function gmailConfigured() {
@@ -46,6 +58,36 @@ function isTransientGmailError(err) {
   if (status === 429 || (typeof status === "number" && status >= 500 && status < 600)) return true;
   const code = err && err.code;
   if (typeof code === "string" && ["ETIMEDOUT", "ECONNRESET", "EAI_AGAIN", "ENOTFOUND"].includes(code)) return true;
+  const msg = err && err.message ? err.message : "";
+  return /timeout|timed out|econnreset|socket hang up/i.test(msg);
+}
+
+async function sendViaResend({ to, booking }) {
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: "TC Lawn Care Plus LLC <onboarding@resend.dev>",
+      to: [to],
+      subject: dingSubject(booking),
+      text: dingLines(booking).join("\n"),
+    }),
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    const err = new Error(`Resend ${res.status}: ${body.slice(0, 200)}`);
+    err.code = res.status;
+    throw err;
+  }
+  return res.json().catch(() => ({}));
+}
+
+function isTransientResendError(err) {
+  const status = err && err.code;
+  if (status === 429 || (typeof status === "number" && status >= 500 && status < 600)) return true;
   const msg = err && err.message ? err.message : "";
   return /timeout|timed out|econnreset|socket hang up/i.test(msg);
 }
@@ -113,6 +155,22 @@ async function sendDing({ to, booking }) {
   if (!to) {
     return { ok: false, status: "not_configured" };
   }
+  if (resendConfigured()) {
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        await sendViaResend({ to, booking });
+        console.log("Ding email sent (Resend)");
+        return { ok: true, status: "sent" };
+      } catch (err) {
+        const msg = err && err.message ? err.message : String(err);
+        console.error(`Ding email failed (Resend, attempt ${attempt}):`, msg);
+        if (!isTransientResendError(err) || attempt === 2) {
+          break;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+      }
+    }
+  }
   if (gmailConfigured()) {
     for (let attempt = 1; attempt <= 2; attempt++) {
       try {
@@ -135,4 +193,4 @@ async function sendDing({ to, booking }) {
   return sendViaSmtp({ to, booking });
 }
 
-module.exports = { smtpConfigured, gmailConfigured, sendDing };
+module.exports = { smtpConfigured, gmailConfigured, resendConfigured, sendDing };

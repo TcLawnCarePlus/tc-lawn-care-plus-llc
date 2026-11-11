@@ -8,7 +8,7 @@
 const express = require("express");
 const path = require("path");
 const db = require("./db");
-const { smtpConfigured, gmailConfigured, sendDing } = require("./ding");
+const { smtpConfigured, gmailConfigured, resendConfigured, sendDing } = require("./ding");
 
 const app = express();
 app.set("trust proxy", 1);
@@ -92,7 +92,7 @@ app.post("/api/bookings", async (req, res) => {
     return res.status(400).json({ error: "Where it is, what needs done, your name, and a service are required." });
   }
   // Save FIRST. The ding is best-effort afterwards and never blocks this.
-  const dingReady = smtpConfigured() || gmailConfigured();
+  const dingReady = smtpConfigured() || gmailConfigured() || resendConfigured();
   const saved = await db.createBooking({
     ...booking,
     dingStatus: dingReady ? "pending" : "not_configured",
