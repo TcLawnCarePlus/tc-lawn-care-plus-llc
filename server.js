@@ -207,6 +207,12 @@ app.post("/api/reviews", async (req, res) => {
   res.status(201).json(saved);
 });
 
+// Privacy policy page, served at /privacy-policy (linked from the
+// Google OAuth consent screen for the booking-email app).
+app.get("/privacy-policy", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "privacy-policy.html"));
+});
+
 // Owner panel: served only at /owner-side, unlinked from the public page,
 // so customers browsing the site never see that an owner side exists.
 // The login + password still guard everything behind it.
