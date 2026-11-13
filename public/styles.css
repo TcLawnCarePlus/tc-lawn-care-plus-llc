@@ -137,6 +137,16 @@ main { max-width: 860px; margin: 0 auto; padding: 8px 12px 24px; }
 .featured-pair { gap: 22px; }
 .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .gallery img { aspect-ratio: 4 / 3; }
+.gallery video {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 12px;
+  border: 3px solid var(--gold); box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  aspect-ratio: 4 / 3; background: #000; display: block;
+}
+.gallery figure { position: relative; }
+.ba-badge { position: absolute; top: 10px; left: 10px; font-weight: 900; font-size: 0.8rem; padding: 4px 8px; border-radius: 6px; z-index: 1; }
+.ba-before { background: #dc2626; color: #fff; }
+.ba-after { background: var(--lime); color: #111; }
+.ba-pair-title { font-weight: 900; margin: 18px 0 10px; }
 figcaption { text-align: center; padding: 8px 4px 4px; font-weight: 600; }
 .bullets li { margin: 8px 0; color: #FFEB3B; font-weight: 700; line-height: 1.5; }
 .featured .bullets { margin-top: 14px; }
